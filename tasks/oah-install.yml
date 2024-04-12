@@ -1,5 +1,6 @@
 - name: Check if snap present
   shell: snap --version
+  failed_when: false
   register: snap_check
 
 - name: Print message
@@ -17,6 +18,7 @@
 
 - name: Check if go exists
   shell: go version
+  failed_when: false
   register: go_check
 
 - name: Print message
