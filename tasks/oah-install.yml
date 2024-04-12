@@ -29,8 +29,7 @@
 
 - name: Install Go
   become: yes
-  shell: |
-    snap install --classic --channel={{ go_version }}/{{ go_channel }} go
+  command: snap install --classic --channel="{{ go_version }}"/"{{ go_channel }}" go
   when: go_check.stdout == ''
 
 - name: Exporting paths
@@ -57,7 +56,7 @@
 
 - name: Install criticality_score
   become: yes
-  shell: "go install github.com/ossf/criticality_score/cmd/criticality_score@{{ criticality_score_version }}"
+  command: go install github.com/ossf/criticality_score/cmd/criticality_score@"{{ criticality_score_version }}"
   when: criticality_check.stdout == ''
 
 - name: Checking if github auth token available
