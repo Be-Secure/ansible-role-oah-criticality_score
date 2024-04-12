@@ -35,6 +35,7 @@
 - name: Check if criticality_score present
   shell: criticality_score --help
   register: criticality_check
+  failed_when: false
 
 - name: Print message
   debug:
