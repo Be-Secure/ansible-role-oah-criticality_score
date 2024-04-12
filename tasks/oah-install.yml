@@ -37,6 +37,10 @@
   register: criticality_check
   failed_when: false
 
+- name: Print msg
+  debug:
+    msg: "Msg: {{ criticality_check.msg }}"
+
 - name: Print message
   debug:
     msg: criticality_score already installed
