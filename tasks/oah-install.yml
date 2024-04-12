@@ -23,7 +23,7 @@
 
 - name: Print message
   debug:
-    msg: "Go already exists {{ go_check.stdout }}"
+    msg: "Go already exists {{ go_check }}"
   failed_when: false
   when: go_check.stdout != ''
 
