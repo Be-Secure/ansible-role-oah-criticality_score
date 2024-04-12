@@ -46,5 +46,11 @@
   shell: "go install github.com/ossf/criticality_score/cmd/criticality_score@{{ criticality_score_version }}"
   when: criticality_check.msg == ''
 
+- name: Checking if github auth token available
+  debug:
+    msg: Github auth token is available
+  when: lookup('env','BESMAN_GH_TOKEN') != ''
+
 - name: Setting Github Auth token
   shell: "export GITHUB_AUTH_TOKEN={{ lookup('env','BESMAN_GH_TOKEN') }}"
+  when: lookup('env','BESMAN_GH_TOKEN') != ''
