@@ -32,7 +32,7 @@
   shell: |
     snap install --classic --channel={{ go_version }}/{{ go_channel }} go
     echo 'export GOPATH=$HOME/go' >> ~/.bashrc
-    echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin'  >> ~/.bashrc
+    echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin' >> ~/.bashrc
     source ~/.bashrc
   when: go_check.stdout == ''
   
