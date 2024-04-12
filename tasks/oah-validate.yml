@@ -1,0 +1,14 @@
+- name: Validate criticality_score installation
+  stat:
+    path: "{{ lookup('env','GOPATH') }}/bin/criticality_score"
+  register: criticality_file
+
+- name: Print message if criticality_score is found
+  debug:
+    msg: "Criticality_score found @ {{ criticality_file.stat.path }}"
+  when: criticality_file.stat.exists
+
+- name: Print message if criticality_score is not found
+  debug:
+    msg: "Criticality_score not found"
+  when: not criticality_file.stat.exists

@@ -1,0 +1,16 @@
+---
+# tasks file for criticality_score
+- include_tasks: "tasks/oah-install.yml"
+  when: oah_command == "install"
+
+- include_tasks: "tasks/oah-remove.yml"
+  when: oah_command == "remove"
+
+- include_tasks: "tasks/oah-validate.yml"
+  when: oah_command == "validate"
+
+- include_tasks: "tasks/oah-update.yml"
+  when: oah_command == "update"
+
+- include_tasks: "tasks/oah-reset.yml"
+  when: oah_command == "reset"

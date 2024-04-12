@@ -1,0 +1,5 @@
+---
+# defaults file for criticality_score
+spdx_sbom_version: v0.0.15
+spdx_sbom_download_url: https://github.com/opensbom-generator/spdx-sbom-generator/releases/download
+spdx_sbom_path: /opt
