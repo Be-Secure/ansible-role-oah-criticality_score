@@ -1,5 +1,5 @@
 ---
-# tasks file for spdx-generator
+# tasks file for criticality_score
 - include_tasks: "tasks/oah-install.yml"
   when: oah_command == "install"
 
