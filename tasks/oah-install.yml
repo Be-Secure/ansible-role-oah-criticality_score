@@ -39,7 +39,7 @@
 
 - name: Print msg
   debug:
-    msg: "Msg: {{ criticality_check.stdout }}"
+    msg: "Msg: {{ criticality_check }}"
 
 - name: Print message
   debug:
