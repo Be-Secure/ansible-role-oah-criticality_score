@@ -5,15 +5,15 @@
 
 - name: Print message
   debug:
-    msg: "Snap already present {{ snap_check.msg }}"
-  when: snap_check.msg != ''
+    msg: "Snap already present {{ snap_check.stdout }}"
+  when: snap_check.stdout != ''
 
 - name: Install snap
   become: yes
   apt:
     name: snapd
     state: present
-  when: snap_check.msg == ''
+  when: snap_check.stdout == ''
 
 
 - name: Check if go exists
@@ -23,8 +23,8 @@
 
 - name: Print message
   debug:
-    msg:" Go already exists {{ go_check.msg }}"
-  when: go_check.msg != ''
+    msg:" Go already exists {{ go_check.stdout }}"
+  when: go_check.stdout != ''
 
 - name: Install Go
   become: yes
@@ -33,7 +33,7 @@
     export GOPATH=$HOME/go >> ~/.bashrc
     export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin  >> ~/.bashrc
     source ~/.bashrc
-  when: go_check.msg == ''
+  when: go_check.stdout == ''
   
 - name: Check if criticality_score present
   shell: criticality_score --help
