@@ -1,22 +1,3 @@
-- name: Set spdx_sbom_path from BESMAN_TOOL_PATH
-  set_fact:
-    spdx_sbom_path: "{{ lookup('env', 'BESMAN_TOOL_PATH') }}"
-  when:  lookup('env', 'BESMAN_TOOL_PATH') != ''
-
-- name: Check if spdx-sbom-generator file exists
-  stat:
-    path: "{{ spdx_sbom_path }}/spdx-sbom-generator"
-  register: sbom_file_path
-
-- name: Display message
-  debug:
-    msg: spdx-sbom-generator is not installed
-  when: not sbom_file_path.stat.exists
-
-- name: Removing spdx-generator
+- name: Remove Go
   become: yes
-  file:
-    path: /opt/spdx-sbom-generator
-    state: absent
-  when: sbom_file_path.stat.exists
-  
+  shell: snap remove go
