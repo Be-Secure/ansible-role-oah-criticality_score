@@ -33,6 +33,7 @@
     snap install --classic --channel={{ go_version }}/{{ go_channel }} go
     export GOPATH=$HOME/go >> ~/.bashrc
     export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin  >> ~/.bashrc
+    source ~/.bashrc
   when: go_check.stdout == ''
   
 - name: Check if criticality_score present
