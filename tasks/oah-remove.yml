@@ -1,3 +1,14 @@
+- name: Check if go is available
+  shell: go version
+  failed_when: false
+  register: go_check
+
+- name: Print msg
+  debug:
+    msg: go not installed
+  when: 
+
 - name: Remove Go
   become: yes
   shell: snap remove go
+  when: go_check.stdout != ''
