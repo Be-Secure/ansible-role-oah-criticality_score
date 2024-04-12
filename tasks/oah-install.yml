@@ -39,7 +39,9 @@
 
 - name: Print msg
   debug:
-    msg: "Msg: {{ criticality_check.stdout_lines }}"
+    msg: "Msg: {{ criticality_check.stdout }}"
+  when: criticality_check.stdout != ''
+
 
 - name: Print message
   debug:
