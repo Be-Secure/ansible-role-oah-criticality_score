@@ -31,9 +31,13 @@
   become: yes
   shell: |
     snap install --classic --channel={{ go_version }}/{{ go_channel }} go
+  when: go_check.stdout == ''
+
+- name: Exporting paths
+  become: yes
+  shell: |
     echo "export GOPATH=$HOME/go" >> ~/.bashrc
     echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> ~/.bashrc
-  when: go_check.stdout == ''
   
 - name: Check if criticality_score present
   shell: criticality_score --help
