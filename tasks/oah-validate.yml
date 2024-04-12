@@ -1,19 +1,14 @@
-- name: Set sbom_file_path from BESMAN_TOOL_PATH
-  set_fact:
-    spdx_sbom_path: "{{ lookup('env', 'BESMAN_TOOL_PATH') }}"
-  when:  lookup('env', 'BESMAN_TOOL_PATH') != ''
-
-- name: Check if spdx-sbom-generator file exists
+- name: Validate criticality_score installation
   stat:
-    path: "{{ spdx_sbom_path }}/spdx-sbom-generator"
-  register: sbom_file_path
-  
-- name: Display file existence status
-  debug:
-    msg: "spdx-sbom-generator is not installed"
-  when: not sbom_file_path.stat.exists
+    path: "{{ lookup('env','GOPATH') }}/bin/criticality_score"
+  register: criticality_file
 
-- name: Spdx-generator installed
+- name: Print message if criticality_score is found
   debug:
-    msg: sbom-spdx-generator is installed
-  when: sbom_file_path.stat.exists
+    msg: "Criticality_score found @ {{ criticality_file.stat.path }}"
+  when: criticality_file.stat.exists
+
+- name: Print message if criticality_score is not found
+  debug:
+    msg: "Criticality_score not found"
+  when: not criticality_file.stat.exists

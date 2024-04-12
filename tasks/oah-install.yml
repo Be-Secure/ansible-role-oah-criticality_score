@@ -32,16 +32,41 @@
   command: snap install --classic --channel="{{ go_version }}"/"{{ go_channel }}" go
   when: go_check.stdout == ''
 
-- name: Exporting paths
-  become: yes
+- name: Adding paths to .bashrc
+  lineinfile:
+    dest: ~/.bashrc
+    line: "{{ item }}"
+    create: yes
+  loop:
+    - "export GOPATH=$HOME/go"
+    - "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin"
+  register: lineinfile_result
+
+- debug:
+    var: lineinfile_result
+
+- name: Exporting vars
   shell: |
-    echo "export GOPATH=$HOME/go" >> ~/.bashrc
-    echo "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin" >> ~/.bashrc
-  
+    export GOPATH=$HOME/go
+    export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+
+- name: Check if var is set
+  debug:
+    msg: "GOPATH:{{ lookup('env','GOPATH') }}"
+
+- name: Check if var is set
+  debug:
+    msg: "PATH:{{ lookup('env','PATH') }}"
+
 - name: Check if criticality_score present
   shell: criticality_score --help
   register: criticality_check
   failed_when: false
+
+- name: Print msg
+  debug:
+    msg: "Msg: {{ criticality_check }}"
 
 - name: Print msg
   debug:
@@ -55,8 +80,7 @@
   when: criticality_check.stdout != ''
 
 - name: Install criticality_score
-  become: yes
-  shell: go install github.com/ossf/criticality_score/cmd/criticality_score@"{{ criticality_score_version }}"
+  command: go install github.com/ossf/criticality_score/cmd/criticality_score@"{{ criticality_score_version }}"
   when: criticality_check.stdout == '' and go_check.stdout != ''
 
 - name: Checking if github auth token available
@@ -67,3 +91,8 @@
 - name: Setting Github Auth token
   shell: "export GITHUB_AUTH_TOKEN={{ lookup('env','BESMAN_GH_TOKEN') }}"
   when: lookup('env','BESMAN_GH_TOKEN') != ''
+
+- name: Print token message
+  debug: 
+    msg: "Run export GITHUB_AUTH_TOKEN=<your github token>"
+  when: lookup('env','BESMAN_GH_TOKEN') == ''
