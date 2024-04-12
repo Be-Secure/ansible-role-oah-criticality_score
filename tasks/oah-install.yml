@@ -39,12 +39,12 @@
 
 - name: Print msg
   debug:
-    msg: "Msg: {{ criticality_check.msg }}"
+    msg: "Msg: {{ criticality_check.stdout }}"
 
 - name: Print message
   debug:
     msg: criticality_score already installed
-  when: criticality_check.msg != ''
+  when: criticality_check.stdout != ''
 
 - name: Install criticality_score
   become: yes
