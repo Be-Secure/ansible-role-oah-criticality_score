@@ -42,8 +42,13 @@
     - "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin"
   register: lineinfile_result
 
+<<<<<<< HEAD
+# - debug:
+#     var: lineinfile_result
+=======
 - debug:
     var: lineinfile_result
+>>>>>>> 55e4bf1b034173df6b56ef84b4cec60307930884
 
 - name: Exporting vars
   shell: |
@@ -59,40 +64,41 @@
   debug:
     msg: "PATH:{{ lookup('env','PATH') }}"
 
-- name: Check if criticality_score present
-  shell: criticality_score --help
-  register: criticality_check
-  failed_when: false
+# - name: Validate criticality_score installation
+#   stat:
+#     path: "{{ lookup('env','GOPATH') }}/bin/criticality_score"
+#   register: criticality_file
 
-- name: Print msg
+- name: Validate criticality_score installation
+  stat:
+    path: "{{ lookup('env','GOPATH') }}/bin/criticality_score"
+  register: criticality_file
+
+# - name: Print criticality_file variable
+#   debug:
+#     var: criticality_file
+
+- name: Print message if criticality_score is already installed
   debug:
-    msg: "Msg: {{ criticality_check }}"
+    msg: "criticality_score already installed"
+  when: criticality_file.stat.exists
 
-- name: Print msg
-  debug:
-    msg: "Msg: {{ criticality_check.stdout }}"
-  when: criticality_check.stdout != ''
-
-
-- name: Print message
-  debug:
-    msg: criticality_score already installed
-  when: criticality_check.stdout != ''
-
-- name: Install criticality_score
+- name: Install criticality_score if not already installed
   command: go install github.com/ossf/criticality_score/cmd/criticality_score@"{{ criticality_score_version }}"
-  when: criticality_check.stdout == '' and go_check.stdout != ''
+  when: not criticality_file.stat.exists
+
+
 
 - name: Checking if github auth token available
   debug:
     msg: Github auth token is available
-  when: lookup('env','BESMAN_GH_TOKEN') != ''
+  when: lookup('env','GITHUB_AUTH_TOKEN') != ''
 
 - name: Setting Github Auth token
-  shell: "export GITHUB_AUTH_TOKEN={{ lookup('env','BESMAN_GH_TOKEN') }}"
-  when: lookup('env','BESMAN_GH_TOKEN') != ''
+  shell: "export GITHUB_AUTH_TOKEN={{ lookup('env','GITHUB_AUTH_TOKEN') }}"
+  when: lookup('env','GITHUB_AUTH_TOKEN') != ''
 
 - name: Print token message
   debug: 
     msg: "Run export GITHUB_AUTH_TOKEN=<your github token>"
-  when: lookup('env','BESMAN_GH_TOKEN') == ''
+  when: lookup('env','GITHUB_AUTH_TOKEN') == ''
