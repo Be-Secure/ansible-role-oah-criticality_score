@@ -42,14 +42,6 @@
     - "export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin"
   register: lineinfile_result
 
-<<<<<<< HEAD
-# - debug:
-#     var: lineinfile_result
-=======
-- debug:
-    var: lineinfile_result
->>>>>>> 55e4bf1b034173df6b56ef84b4cec60307930884
-
 - name: Exporting vars
   shell: |
     export GOPATH=$HOME/go
