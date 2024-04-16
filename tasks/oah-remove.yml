@@ -11,6 +11,10 @@
 
 - name: Remove criticality_score
   shell: rm "{{ lookup('env','GOPATH') }}/bin/criticality_score"
+  when: criticality_file.stat.exists
+
+- name: Unset github token
+  shell: unset GITHUB_AUTH_TOKEN
 
 - name: Check if go is available
   shell: go version
